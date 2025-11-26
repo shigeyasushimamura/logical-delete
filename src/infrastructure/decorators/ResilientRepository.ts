@@ -8,7 +8,11 @@ import { setTimeout } from "timers/promises";
 export class ResilientRepository<T extends BaseEntity>
   implements IRepository<T>
 {
-  constructor(private inner: IRepository<T>, private retryNum = 3) {}
+  constructor(
+    private inner: IRepository<T>,
+    private maxRetries = 3,
+    private baseDelay = 100
+  ) {}
 
   async save(entity: T) {
     return this.withRetry(() => this.inner.save(entity));
@@ -26,9 +30,14 @@ export class ResilientRepository<T extends BaseEntity>
       try {
         return await fn();
       } catch (e) {
-        if (++attempt > this.retryNum) throw e;
-        const delay = 50 * Math.pow(2, attempt);
-        console.warn(`[CORE:Retry] Waiting ${delay}ms...`);
+        if (++attempt > this.maxRetries) throw e;
+
+        // 指数バックオフ：100ms, 200ms, 400ms, 800ms...
+        const delay = this.baseDelay * Math.pow(2, attempt - 1);
+        console.warn(
+          `[Retry] Attempt ${attempt} failed. Waiting ${delay}ms before retry...`
+        );
+
         await new Promise((r) => setTimeout(delay, r));
       }
     }

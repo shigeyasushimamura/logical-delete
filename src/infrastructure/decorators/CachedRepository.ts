@@ -6,6 +6,7 @@ import type { IRepository } from "../../domain/shared/IRepository.js";
  */
 export class CachedRepository<T extends BaseEntity> implements IRepository<T> {
   private cache = new Map<string, { data: T | null; expiry: number }>();
+  private readonly TTL = 5000;
 
   constructor(private inner: IRepository<T>) {}
 
@@ -22,7 +23,7 @@ export class CachedRepository<T extends BaseEntity> implements IRepository<T> {
       return cached.data;
     }
     const res = await this.inner.findById(id);
-    this.cache.set(id, { data: res, expiry: Date.now() + 5000 });
+    this.cache.set(id, { data: res, expiry: Date.now() + this.TTL });
     return res;
   }
 
