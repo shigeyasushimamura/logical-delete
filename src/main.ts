@@ -29,7 +29,8 @@ async function main() {
 
   // READ (DB Access)
   console.log("\n--- First Read ---");
-  await userRepo.findById(userId);
+  const u = await userRepo.findById(userId);
+  console.log("Get User(u_100):", u); // null
 
   // READ (Cache Hit)
   console.log("\n--- Second Read ---");
