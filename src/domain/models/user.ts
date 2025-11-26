@@ -1,5 +1,4 @@
-import type { BaseEntity } from "../core/IRepository.js";
-
+import type { BaseEntity } from "../shared/BaseEntiry.js";
 /**
  * User型定義
  */

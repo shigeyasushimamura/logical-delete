@@ -1,7 +1,7 @@
-import type { User } from "./domain/user.js";
-import { InMemoryRepository } from "./infra/memory/MemoryRepository.js";
-import { CachedRepository } from "./core/CachedRepository.js";
-import { ResilientRepository } from "./core/ResilientRepository.js";
+import type { User } from "./domain/models/user.js";
+import { InMemoryRepository } from "./infrastructure/memory/MemoryRepository.js";
+import { CachedRepository } from "./infrastructure/middleware/CachedRepository.js";
+import { ResilientRepository } from "./infrastructure/middleware/ResilientRepository.js";
 
 async function main() {
   console.log("=== APP START ===");

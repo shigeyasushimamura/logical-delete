@@ -1,4 +1,5 @@
-import type { IRepository, BaseEntity } from "./IRepository.js";
+import type { BaseEntity } from "../../domain/shared/BaseEntiry.js";
+import type { IRepository } from "../../domain/shared/IRepository.js";
 
 /**
  * 汎用キャッシュデコレーター
